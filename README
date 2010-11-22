@@ -21,7 +21,22 @@ But there were some great problems with given code:
 So, I rewrite full code of this helper to make it more flexible and stable,
 but great thanks previous author for idea and first steps!
 
-Using helpers
+LISENCE
+=====================
+
+The PHP License, version 3.0
+
+Copyright (c) 1997-2005 The PHP Group
+
+This source file is subject to version 3.0 of the PHP license,
+that is bundled with this package in the file LICENSE, and is
+available through the world-wide-web at the following url:
+http://www.php.net/license/3_0.txt.
+If you did not receive a copy of the PHP license and are unable to
+obtain it through the world-wide-web, please send a note to
+license@php.net so we can mail you a copy immediately.
+
+USING HELPERS
 =====================
 
 For reusing this library in your application do next:
@@ -43,7 +58,7 @@ follow directories will be used as default:
 
 Give this directories 0777 permissions.
 
-JavaScript processing
+JAVASCRIPT PROCESSING
 =====================
 
 4. If you already use headScript() view helper for adding JS files on HTML page, pass this step.
@@ -60,7 +75,7 @@ http://framework.zend.com/manual/en/zend.view.helpers.html#zend.view.helpers.ini
 
 <?php echo $this->compressScript() ?>
 
-CSS styles processing
+CSS STYLES PROCESSING
 =====================
 
 6. The same with css files appending:
