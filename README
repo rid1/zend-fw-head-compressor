@@ -74,3 +74,53 @@ And than
 
 ADDITIONAL NOTES
 =====================
+
+For making your site faster, you can compress this files using gzip and set server headers for client caching.
+This helpers don't gzip content of cache files cause of several problems with this in some browsers.
+But you can easy add gzipping on your web server, according to client-side request.
+
+For Apache, you can use this configuration:
+
+=====================
+# css, js gzip compression
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE text/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
+
+# max compression
+DeflateCompressionLevel 9
+DeflateWindowSize 15
+DeflateBufferSize 32768
+
+# Expires, static content will be cached on client side for 10 year
+ExpiresActive On
+ExpiresDefault "access plus 10 years"
+
+<FilesMatch \.(html|xhtml|xml|shtml|phtml|php)$>
+    ExpiresActive Off
+</FilesMatch>
+
+# ETag for images, js, css
+FileETag none
+<FilesMatch \.(js|css|gif|png|jpg|swf)$>
+    FileETag MTime Size
+</FilesMatch>
+=====================
+
+For Nginx, use this:
+
+=====================
+gzip on;
+
+# For using gzip_static module you have to configure nginx with special key
+# to get more information on this, pls, don't hesitate to use google
+gzip_static on;
+gzip_http_version 1.1;
+gzip_disable "MSIE [1-6]\.";
+gzip_types text/plain text/html text/css application/x-javascript text/javascript;
+gzip_vary on;
+gzip_comp_level 9;
+gzip_proxied any;
+=====================
+
+For other web servers you can quickly find information in Internet. 
