@@ -71,3 +71,6 @@ CSS styles processing
 And than
 
 <?php echo $this->compressStyle() ?>
+
+ADDITIONAL NOTES
+=====================
