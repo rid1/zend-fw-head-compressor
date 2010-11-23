@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+
+        <?php $this->headScript()->appendFile($this->baseUrl('js/jquery.js')); ?>
+        <?php $this->headScript()->appendFile($this->baseUrl('js/jquery.prettyPhoto.js')); ?>
+        <?php $this->headScript()->appendFile($this->baseUrl('js/interface.js')); ?>
+
+        <?php echo $this->compressScript() ?>
+
+        <?php $this->headLink()->appendStylesheet($this->baseUrl('css/style.css')); ?>
+        <?php $this->headLink()->appendStylesheet($this->baseUrl('css/jquery.prettyPhoto.css')); ?>
+
+        <?php echo $this->compressStyle() ?>
+    </head>
+    <body>
+        <div id="welcome">
+            <h1>Welcome to the <span id="zf-name">Zend Framework!</span></h1>
+
+            <h3>This is your project's main page</h3>
+
+            <div id="more-information">
+                <p><img src="http://framework.zend.com/images/PoweredBy_ZF_4LightBG.png" /></p>
+                <p>
+                    Helpful Links: <br />
+                    <a href="http://framework.zend.com/">Zend Framework Website</a> |
+                    <a href="http://framework.zend.com/manual/en/">Zend Framework Manual</a>
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
