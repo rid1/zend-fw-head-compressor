@@ -22,7 +22,7 @@
  * @author     Alexey S. Kachayev <kachayev@gmail.com>
  * @link       https://github.com/kachayev/zend-fw-head-compressor
  */
-class CP_View_Helper_CompressScript
+class Dm_View_Helper_CompressScript
     extends Zend_View_Helper_HeadScript
 {
     /**

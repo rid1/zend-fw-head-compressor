@@ -39,7 +39,7 @@ For reusing this library in your application do next:
 autoloaderNamespaces[] = "Dm"
 
 ;; Add new path for finding view helpers
-resources.view.helperPath.CP_View_Helper = APPLICATION_PATH "/../library/Dm/View/Helper"
+resources.view.helperPath.Dm_View_Helper = APPLICATION_PATH "/../library/Dm/View/Helper"
 
 3. Create folder for handling cached JS and CSS files. This folder should be available for webserver,
 follow directories will be used as default: 
