@@ -250,7 +250,7 @@ class Dm_View_Helper_CompressScript
                 $jsContent .= (is_array($js) ? file_get_contents($js['filepath']) : $js) . "\n\n";
             }
 
-            // Minify by using 3th-party library
+            // Minify by using 3rd-party library
             if ($this->getOption('compress')) {
                 require_once 'Tools/JSMin.php';
                 $jsContent = JSMin::minify($jsContent);
