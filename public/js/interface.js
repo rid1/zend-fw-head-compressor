@@ -1,3 +1,3 @@
 $(function(){
-    $('body').text('CompressScript Helper works alright!');
+    $('div').text('CompressScript Helper works alright!');
 });
