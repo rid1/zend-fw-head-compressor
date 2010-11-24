@@ -18,14 +18,20 @@ class Dm_View_Helper_CompressScriptTest
     protected $_helper = null;
 
     /**
+     * @var Zend_View
+     */
+    protected $_view = null;
+
+    /**
      * New helper object for each test case
      */
     public function setUp()
     {
         parent::setUp();
 
+        $this->_view   = new Zend_View();
         $this->_helper = new Dm_View_Helper_CompressScript();
-        $this->_helper->setView(new Zend_View());
+        $this->_helper->setView($this->_view);
     }
 
     public function testGetOptionShouldReturnActualValue()
@@ -65,5 +71,19 @@ class Dm_View_Helper_CompressScriptTest
     {
         $this->_helper->compressScript(new Zend_Config(array('compress'=>false, 'combine'=>false)));
         $this->assertFalse($this->_helper->getOption('compress'));
+    }
+
+    public function testCompressScriptWithoutCombineShouldReturnHeadScript()
+    {
+        $this->_helper->setConfig(new Zend_Config(array('compress'=>false, 'combine'=>false)));
+        $result = $this->_helper->compressScript();
+
+        $this->assertTrue($result instanceof Zend_View_Helper_HeadScript, 'Is head script object');
+        $this->assertFalse($result instanceof Dm_View_Helper_CompressScript, 'Non self');
+    }
+    
+    public function testCompressScriptWithCombineShouldReturnString()
+    {
+        $this->assertTrue(is_string($this->_helper->compressScript()));
     }
 }
