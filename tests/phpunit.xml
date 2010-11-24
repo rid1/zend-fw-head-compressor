@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit bootstrap="./library/bootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    stopOnFailure="true"
+    syntaxCheck="true">
+
+    <testsuite name="DebugModeLibrary Main Suite">
+        <directory>./</directory>
+    </testsuite>
+
+    <filter>
+        <blacklist>
+            <directory suffix=".php">../tests</directory>
+            <directory suffix=".php">../library/Zend</directory>
+            <directory suffix=".php">../library/Tools</directory>
+        </blacklist>
+        <whitelist>
+            <directory suffix=".php">../application</directory>
+            <directory suffix=".php">../library/Dm</directory>
+            <exclude>
+                <directory suffix=".phtml">../application</directory>
+                <file>../application/Bootstrap.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
