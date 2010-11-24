@@ -19,7 +19,7 @@
  * @package    View
  * @subpackage Helper
  * @version    0.3.1
- * @author     Alex S. Kachayev <kachayev@gmail.com>
+ * @author     Alexey S. Kachayev <kachayev@gmail.com>
  * @link       https://github.com/kachayev/zend-fw-head-compressor
  */
 class CP_View_Helper_CompressScript
@@ -64,10 +64,15 @@ class CP_View_Helper_CompressScript
      * Compress files using toString convertion
      * or just return headScript helpers result if combine options set to FALSE
      *
+     * @param  array|Zend_Config|null $config
      * @return string
      */
-    public function compressScript()
+    public function compressScript($config=null)
     {
+        if (null !== $config) {
+            $this->setConfig($config);
+        }
+
         return $this->getOption('combine', true) ? $this->toString() : $this->view->headScript();
     }
 
