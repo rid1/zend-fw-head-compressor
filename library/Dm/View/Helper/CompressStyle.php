@@ -123,19 +123,21 @@ class Dm_View_Helper_CompressStyle
             if (isset($attributes[$itemKey])) {
                 if (is_array($attributes[$itemKey])) {
                     foreach ($attributes[$itemKey] as $key => $value) {
-                        $link .= sprintf('%s="%s" ', $key, ($this->_autoEscape)
-                                            ? $this->_escape($value) : $value);
+                        $link .= sprintf('%s="%s" ', $key, 
+                                         ($this->_autoEscape) ? $this->_escape($value) : $value);
                     }
                 } else {
-                    $link .= sprintf('%s="%s" ', $itemKey, ($this->_autoEscape)
-                                        ? $this->_escape($attributes[$itemKey]) : $attributes[$itemKey]);
+                    $link .= sprintf('%s="%s" ', $itemKey, 
+                                     ($this->_autoEscape) 
+                                        ? $this->_escape($attributes[$itemKey])
+                                        : $attributes[$itemKey]);
                 }
             }
         }
 
         $link .= ($this->view instanceof Zend_View_Abstract)
-                ? ( $this->view->doctype()->isXhtml()) ? '/>' : '>'
-                : '/>';
+                    ? ( $this->view->doctype()->isXhtml()) ? '/>' : '>'
+                    : '/>';
 
         if (($link == '<link />') || ($link == '<link >')) {
             return '';
