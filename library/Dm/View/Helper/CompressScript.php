@@ -284,7 +284,7 @@ class Dm_View_Helper_CompressScript
      */
     protected function _getWebPath($path)
     {
-        return str_replace($this->_getServerPath(''), '', $path);
+        return '/' . ltrim(str_replace($this->_getServerPath(''), '', $path), '/');
     }
 
     /**

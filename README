@@ -77,6 +77,16 @@ And than
 
 <?php echo $this->compressStyle() ?>
 
+TESTING
+=====================
+
+In package you can find test classes for helper's unit testing. You can add new test cases if necessary.
+Also, if you will launch full copy of this repository as web project, you have to see on web page test string:
+
+"If you see this words on red background, than both of compressors work well!"
+
+If it's true - everything is alright =) (helpers merge 3 js- and 3 css- files).
+
 ADDITIONAL NOTES
 =====================
 
@@ -86,7 +96,7 @@ But you can easy add gzipping on your web server, according to client-side reque
 
 For Apache, you can use this configuration:
 
-=====================
+---------------------
 # css, js gzip compression
 AddOutputFilterByType DEFLATE text/css
 AddOutputFilterByType DEFLATE text/javascript
@@ -110,11 +120,11 @@ FileETag none
 <FilesMatch \.(js|css|gif|png|jpg|swf)$>
     FileETag MTime Size
 </FilesMatch>
-=====================
+---------------------
 
 For Nginx, use this:
 
-=====================
+---------------------
 gzip on;
 
 # For using gzip_static module you have to configure nginx with special key
@@ -126,6 +136,6 @@ gzip_types text/plain text/html text/css application/x-javascript text/javascrip
 gzip_vary on;
 gzip_comp_level 9;
 gzip_proxied any;
-=====================
+---------------------
 
 For other web servers you can quickly find information in Internet. 
