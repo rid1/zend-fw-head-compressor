@@ -1,5 +1,5 @@
 # Compressed JS files #
 #######################
 
-public/cache/js/.js
-public/cache/css/.css
+public/cache/js/*.js
+public/cache/css/*.css
