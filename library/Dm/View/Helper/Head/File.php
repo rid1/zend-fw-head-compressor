@@ -27,19 +27,6 @@ class Dm_View_Helper_Head_File
     const NON_CACHE_COMMENT = '//@non-cache';
 
     /**
-     * Configuration for compressor working
-     *
-     * @var array
-     */
-    protected $_config = array(
-        'dir'      => '',
-        'extension'=> '',
-        'combine'  => true,
-        'compress' => true,
-        'symlinks' => array()
-    );
-
-    /**
      * List of added files
      *
      * @var array
@@ -171,35 +158,5 @@ class Dm_View_Helper_Head_File
         $baseDir = empty($_SERVER['DOCUMENT_ROOT'])
                     ? APPLICATION_PATH . '/../public' : rtrim($_SERVER['DOCUMENT_ROOT'], '/');
         return $baseDir . '/' . ltrim($path, '/');
-    }
-
-    /**
-     * Set configuration, possible to use array or Zend_Config object
-     *
-     * @param  array|Zend_Config $config
-     * @return null
-     */
-    public function setConfig($config=null)
-    {
-        if ($config instanceof Zend_Config) {
-            $config = $config->toArray();
-        } elseif(is_null($config)) {
-            $config = array();
-        }
-
-        $this->_config = array_merge($this->_config, $config);
-        print_r($this->_config);
-    }
-
-    /**
-     * Return option from current object configuration
-     *
-     * @param  string $name
-     * @param  mixed  $defaultValue
-     * @return mixed
-     */
-    public function getOption($name, $defaultValue=null)
-    {
-        return array_key_exists($name, $this->_config) ? $this->_config[$name] : $defaultValue;
     }
 }
