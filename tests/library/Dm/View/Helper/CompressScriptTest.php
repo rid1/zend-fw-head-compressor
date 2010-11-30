@@ -36,7 +36,8 @@ class Dm_View_Helper_CompressScriptTest
 
     public function testGetOptionShouldReturnActualValue()
     {
-        $this->assertTrue($this->_helper->getOption('combine'));
+        $this->assertTrue($this->_helper->getOption('combine'), 'Set by default');
+        $this->assertEquals('js', $this->_helper->getOption('extension'), 'Set extension to default by merging');
     }
     
     public function testGetOptionWithNonExistenKeyShouldReturnDefaultValue()

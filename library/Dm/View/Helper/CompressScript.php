@@ -28,7 +28,7 @@ class Dm_View_Helper_CompressScript
     /**
      * @var string
      */
-    protected $_defaultCacheDir = '/cache/js';
+    protected $_defaultCacheDir = '/cache/js/';
 
     /**
      * Object for file processing
@@ -36,6 +36,19 @@ class Dm_View_Helper_CompressScript
      * @var Dm_View_Helper_Head_File
      */
     protected $_processor = null;
+
+    /**
+     * Constructor
+     *
+     * Set separator to PHP_EOL.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setConfig();
+    }
 
     /**
      * Processing helper
@@ -48,14 +61,6 @@ class Dm_View_Helper_CompressScript
      */
     public function compressScript($config=null)
     {
-        if ($config instanceof Zend_Config) {
-            $config = $config->toArray();
-        } elseif (!is_array($config)) {
-            $config = array();
-        }
-
-        // Merge default configuration
-        $config = array_merge(array('dir'=>$this->_defaultCacheDir,'extenstion'=>'js'),$config);
         $this->setConfig($config);
 
         return $this->getOption('combine', true) ? $this->toString() : $this->view->headScript();
@@ -193,6 +198,14 @@ class Dm_View_Helper_CompressScript
      */
     public function setConfig($config=null)
     {
+        if ($config instanceof Zend_Config) {
+            $config = $config->toArray();
+        } elseif (!is_array($config)) {
+            $config = array();
+        }
+
+        // Merge default configuration
+        $config = array_merge(array('dir'=>$this->_defaultCacheDir,'extension'=>'js'),$config);
         return $this->getProcessor()->setConfig($config);
     }
 
