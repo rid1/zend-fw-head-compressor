@@ -84,7 +84,7 @@ class Dm_View_Helper_CompressScript
             }
 
             // Check if this item cachable and create specific container for it if necessary
-            if (!$this->getProcessor->isCachable($item)) {
+            if (!$this->getProcessor()->isCachable($item)) {
                 $items[] = $this->itemToString($item, $indent, $escapeStart, $escapeEnd);
             } else {
                 $this->getProcessor()->cache($item);
@@ -214,8 +214,8 @@ class Dm_View_Helper_CompressScript
      * @return Dm_View_Helper_Head_File
      */
     public function getProcessor() {
-        if(null === $this->_process) {
-            $this->_processor = $this->setProcessor(new Dm_View_Helper_Head_File());
+        if(null === $this->_processor) {
+            $this->setProcessor(new Dm_View_Helper_Head_File());
         }
 
         return $this->_processor;
@@ -225,7 +225,7 @@ class Dm_View_Helper_CompressScript
      * Set file processor object using FileAbstract for dependency keeping
      *
      * @param  Dm_View_Helper_Head_FileAbstract $processor
-     * @return self
+     * @return $this
      */
     public function setProcessor(Dm_View_Helper_Head_FileAbstract $processor)
     {

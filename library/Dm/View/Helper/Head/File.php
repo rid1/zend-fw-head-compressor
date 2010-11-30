@@ -52,7 +52,7 @@ class Dm_View_Helper_Head_File
     }
 
     /**
-     * Try to find JS file for processing
+     * Try to find file for processing
      * On success return full filepath, and NULL for failure
      *
      * @param  string      $src
@@ -111,7 +111,7 @@ class Dm_View_Helper_Head_File
         if (!empty($item->source)) {
             $this->_cache[] = $item->source;
         } else {
-            $path = $this->searchJsFile($item->attributes['src']);
+            $path = $this->searchFile($item->attributes['src']);
             $this->_cache[] = array(
                 'filepath' => $path,
                 'mtime'    => filemtime($path)
@@ -120,7 +120,7 @@ class Dm_View_Helper_Head_File
     }
 
     /**
-     * Build full filename by ending it with JS extension and IS_COMPRESSED suffix
+     * Build full filename by ending it with given extension and IS_COMPRESSED suffix
      *
      * @param  string $filename
      * @return string
@@ -142,7 +142,7 @@ class Dm_View_Helper_Head_File
      */
     public function getWebPath($path)
     {
-        return '/' . ltrim(str_replace($this->_getServerPath(''), '', $path), '/');
+        return '/' . ltrim(str_replace($this->getServerPath(''), '', $path), '/');
     }
 
     /**

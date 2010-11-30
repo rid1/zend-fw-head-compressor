@@ -39,7 +39,6 @@ abstract class Dm_View_Helper_Head_FileAbstract
         }
 
         $this->_config = array_merge($this->_config, $config);
-        print_r($this->_config);
     }
 
     /**
