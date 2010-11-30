@@ -62,12 +62,6 @@ class Dm_View_Helper_CompressScriptTest
         $this->assertTrue($this->_helper->getOption('combine'), 'Default value'); 
     }
 
-// Move to processor test
-//            public function testSearchFileShouldReturnNullForNonExisten()
-//            {
-//                $this->assertEquals(null, $this->_helper->searchFile('file-which-never-be'));
-//            }
-
     public function testCompressScriptWithConfigParamShouldOverwriteConfig()
     {
         $this->_helper->compressScript(new Zend_Config(array('compress'=>false, 'combine'=>false)));
