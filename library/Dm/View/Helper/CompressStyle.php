@@ -9,7 +9,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 
 /**
  * Helper for pooling all CSS file to one cached file
- * For minifying script file JSMin library is used
+ * For minifying script file CSS compressor library is used
  *
  * Prototype for this helper comes from here
  * http://habrahabr.ru/blogs/zend_framework/85324/
@@ -25,7 +25,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
  *
  * @package    View
  * @subpackage Helper
- * @version    0.4.7
+ * @version    0.4.9
  * @author     Alex S. Kachayev <kachayev@gmail.com>
  * @link       https://github.com/kachayev/zend-fw-head-compressor
  */
@@ -33,30 +33,27 @@ class Dm_View_Helper_CompressStyle
     extends Zend_View_Helper_HeadLink
 {
     /**
-     * Used as suffix for compessed CSS files
-     *
-     * @const string
+     * @var string
      */
-    const COMPRESSED_FILE_SUFFIX = '_compressed';
+    protected $_defaultCacheDir = '/cache/css/';
 
     /**
-     * Configuration for compressor working
+     * Object for file processing
      *
-     * @var array
+     * @var Dm_View_Helper_Head_File
      */
-    protected $_config = array(
-        'dir'      => '/cache/css/',
-        'combine'  => true,
-        'compress' => true,
-        'symlinks' => array()
-    );
+    protected $_processor = null;
 
     /**
-     * List of added files
+     * Constructor
      *
-     * @var array
+     * @return void
      */
-    protected $_cache = array();
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setConfig();
+    }
     
     /**
      * Processing helper
@@ -96,10 +93,10 @@ class Dm_View_Helper_CompressStyle
             }
             
             // Check if this item cachable and create specific container for it if necessary
-            if (!$this->isCachable($item)) {
+            if (!$this->getProcessor()->isCachable($item)) {
                 $items[] = $this->itemToString($item);
             } else {
-                $this->cache($item);
+                $this->getProcessor()->cache($item);
             }
         }
 
@@ -151,50 +148,16 @@ class Dm_View_Helper_CompressStyle
     }
 
     /**
-     * Check if CSS file/source is cachable
-     *
-     * @param  array|stdClass  $attributes
-     * @return boolen
-     */
-    public function isCachable($attributes)
-    {
-        // For conviency works only with array format
-        $attributes = (array) $attributes;
-
-        // Check, that conditional stylesheet isn`t a string (empty or array)
-        if (!empty($attributes['conditionalStylesheet']) && is_string($attributes['conditionalStylesheet'])) {
-            return false;
-        }
-
-        // @todo: Add here symlinks lookign for
-        return (isset($attributes['href']) && is_readable($this->_getServerPath($attributes['href'])));
-    }
-
-    /**
-     * Add given item (by source or file path) to caching queue
-     *
-     * @param  array|stdClass $attributes
-     * @return null
-     */
-    public function cache($attributes)
-    {
-        $attributes = (array) $attributes;
-        $filePath   = $this->_getServerPath($attributes['href']);
-
-        $this->_cache[] = array(
-            'filepath' => $filePath,
-            'mtime'    => filemtime($filePath)
-        );
-    }
-    
-    /**
      * Compile full list of files in $this->_cache array
      *
      * @return string
      */
     protected function _getCompiledItem()
     {
-        $path = $this->_getServerPath($this->getOption('dir').$this->_fullFilename(md5(serialize($this->_cache))));
+        $fileProcessor = $this->getProcessor();
+        $path = $fileProcessor->getServerPath(
+            $this->getOption('dir') . $fileProcessor->fullFilename(md5(serialize($fileProcessor->getCache())))
+        );
         if (!file_exists($path)) {
             // Check if necessary directory is exists
             $dir = dirname($path);
@@ -204,7 +167,7 @@ class Dm_View_Helper_CompressStyle
             }
 
             $cssContent = '';
-            foreach ($this->_cache as $css) {
+            foreach ($fileProcessor->getCache() as $css) {
                 $content = file_get_contents($css['filepath']);
 
                 require_once 'CSS.php';
@@ -230,46 +193,7 @@ class Dm_View_Helper_CompressStyle
             file_put_contents($path, $cssContent);
         }
 
-        return $this->createDataStylesheet(array('href' => $this->_getWebPath($path)));
-    }
-
-    /**
-     * Build full filename by ending it with CSS extension and IS_COMPRESSED suffix
-     *
-     * @param  string $filename
-     * @return string
-     */
-    protected function _fullFilename($filename)
-    {
-        return $filename . ($this->getOption('compress') ? self::COMPRESSED_FILE_SUFFIX : '') . '.css';
-    }
-
-    /**
-     * Build web path from server variant
-     *
-     * @todo: Allow overwrite this function but setting to cache getWebPath handler
-     *
-     * @param  string $path
-     * @return string
-     */
-    protected function _getWebPath($path)
-    {
-        return '/' . ltrim(str_replace($this->_getServerPath(''), '', $path), '/');
-    }
-
-    /**
-     * Build server path from relative one
-     *
-     * @todo: Allow overwrite this function but setting to cache getServerPath handler
-     *
-     * @param  string $path
-     * @return string
-     */
-    protected function _getServerPath($path)
-    {
-        $baseDir = empty($_SERVER['DOCUMENT_ROOT'])
-                    ? APPLICATION_PATH . '/../public' : rtrim($_SERVER['DOCUMENT_ROOT'], '/');
-        return $baseDir . '/' . ltrim($path, '/');
+        return $this->createDataStylesheet(array('href' => $this->getProcessor()->getWebPath($path)));
     }
 
     /**
@@ -278,13 +202,17 @@ class Dm_View_Helper_CompressStyle
      * @param  array|Zend_Config $config
      * @return null
      */
-    public function setConfig($config)
+    public function setConfig($config=null)
     {
         if ($config instanceof Zend_Config) {
             $config = $config->toArray();
+        } elseif (!is_array($config)) {
+            $config = array();
         }
 
-        $this->_config = array_merge($this->_config, $config);
+        // Merge default configuration
+        $config = array_merge(array('dir'=>$this->_defaultCacheDir,'extension'=>'css'),$config);
+        return $this->getProcessor()->setConfig($config);
     }
 
     /**
@@ -296,6 +224,31 @@ class Dm_View_Helper_CompressStyle
      */
     public function getOption($name, $defaultValue=null)
     {
-        return array_key_exists($name, $this->_config) ? $this->_config[$name] : $defaultValue;
+        return $this->getProcessor()->getOption($name, $defaultValue);
+    }
+
+    /**
+     * Create file processing object or return existen
+     *
+     * @return Dm_View_Helper_Head_File
+     */
+    public function getProcessor() {
+        if(null === $this->_processor) {
+            $this->setProcessor(new Dm_View_Helper_Head_File());
+        }
+
+        return $this->_processor;
+    }
+
+    /**
+     * Set file processor object using FileAbstract for dependency keeping
+     *
+     * @param  Dm_View_Helper_Head_FileAbstract $processor
+     * @return $this
+     */
+    public function setProcessor(Dm_View_Helper_Head_FileAbstract $processor)
+    {
+        $this->_processor = $processor;
+        return $this;
     }
 }

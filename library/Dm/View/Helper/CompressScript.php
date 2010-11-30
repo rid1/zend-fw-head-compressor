@@ -61,7 +61,9 @@ class Dm_View_Helper_CompressScript
      */
     public function compressScript($config=null)
     {
-        $this->setConfig($config);
+        if (null !== $config) {
+            $this->setConfig($config);
+        }
 
         return $this->getOption('combine', true) ? $this->toString() : $this->view->headScript();
     }
