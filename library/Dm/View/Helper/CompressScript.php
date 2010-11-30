@@ -26,37 +26,16 @@ class Dm_View_Helper_CompressScript
     extends Zend_View_Helper_HeadScript
 {
     /**
-     * Used as suffix for compessed JS files
-     *
-     * @const string
+     * @var string
      */
-    const COMPRESSED_FILE_SUFFIX = '_compressed';
+    protected $_defaultCacheDir = '/cache/js';
 
     /**
-     * Add this comment to JS file (or source) to prevent caching it
+     * Object for file processing
      *
-     * @const string
+     * @var Dm_View_Helper_Head_File
      */
-    const NON_CACHE_COMMENT = '//@non-cache';
-
-    /**
-     * Configuration for compressor working
-     *
-     * @var array
-     */
-    protected $_config = array(
-        'dir'      => '/cache/js/',
-        'combine'  => true,
-        'compress' => true,
-        'symlinks' => array()
-    );
-
-    /**
-     * List of added files
-     *
-     * @var array
-     */
-    protected $_cache = array();
+    protected $_processor = null;
 
     /**
      * Processing helper
@@ -69,9 +48,15 @@ class Dm_View_Helper_CompressScript
      */
     public function compressScript($config=null)
     {
-        if (null !== $config) {
-            $this->setConfig($config);
+        if ($config instanceof Zend_Config) {
+            $config = $config->toArray();
+        } elseif (!is_array($config)) {
+            $config = array();
         }
+
+        // Merge default configuration
+        $config = array_merge(array('dir'=>$this->_defaultCacheDir,'extenstion'=>'js'),$config);
+        $this->setConfig($config);
 
         return $this->getOption('combine', true) ? $this->toString() : $this->view->headScript();
     }
@@ -99,10 +84,10 @@ class Dm_View_Helper_CompressScript
             }
 
             // Check if this item cachable and create specific container for it if necessary
-            if (!$this->isCachable($item)) {
+            if (!$this->getProcessor->isCachable($item)) {
                 $items[] = $this->itemToString($item, $indent, $escapeStart, $escapeEnd);
             } else {
-                $this->cache($item);
+                $this->getProcessor()->cache($item);
             }
         }
 
@@ -160,74 +145,7 @@ class Dm_View_Helper_CompressScript
         return $html;
     }
 
-    /**
-     * Try to find JS file for processing
-     * On success return full filepath, and NULL for failure
-     *
-     * @param  string      $src
-     * @return string|null
-     */
-    public function searchJsFile($src)
-    {
-        $path = $this->_getServerPath($src);
-        // If this path is readable file return it
-        if (is_readable($path)) {
-            return $path;
-        }
 
-        // If file is not readable, look throught all symlinks
-        foreach ($this->getOption('symlinks',array()) as $virtualPath => $realPath) {
-            $path = str_replace($virtualPath, $realPath, '/' . ltrim($src, '/'));
-            if (is_readable($path)) {
-                return $path;
-            }
-        }
-
-        // Return null if file not found
-        return null;
-    }
-
-    /**
-     * Check if JS file/source is cachable
-     *
-     * @param  array  $item
-     * @return boolen
-     */
-    public function isCachable($item)
-    {
-        // Don't cache items with conditional attributes
-        if (!empty($item->attributes['conditional']) && is_string($item->attributes['conditional'])) {
-            return false;
-        }
-
-        // Don't cache items with specail comment in source
-        if (!empty($item->source) && false === strpos($item->source, self::NON_CACHE_COMMENT)) {
-            return true;
-        }
-
-        // Cache file by JS file, found by SRC attribute
-        return (isset($item->attributes['src']) && $this->searchJsFile($item->attributes['src']));
-    }
-
-    /**
-     * Add given item (by source or file path) to caching queue
-     * 
-     * @param  array $item
-     * @return null
-     */
-    public function cache($item)
-    {
-        if (!empty($item->source)) {
-            $this->_cache[] = $item->source;
-        } else {
-            $path = $this->searchJsFile($item->attributes['src']);
-            $this->_cache[] = array(
-                'filepath' => $path,
-                'mtime'    => filemtime($path)
-            );
-        }
-    }
-    
     /**
      * Compile full list of files in $this->_cache array
      *
@@ -235,7 +153,11 @@ class Dm_View_Helper_CompressScript
      */
     protected function _getCompiledItem()
     {
-        $path = $this->_getServerPath($this->getOption('dir').$this->_fullFilename(md5(serialize($this->_cache))));
+        $fileProcessor = $this->getProcessor();
+        $path = $fileProcessor->getServerPath(
+            $this->getOption('dir') . $fileProcessor->fullFilename(md5(serialize($fileProcessor->getCache())))
+        );
+        
         if (!file_exists($path)) {
             // Check if necessary directory is exists
             $dir = dirname($path);
@@ -246,7 +168,7 @@ class Dm_View_Helper_CompressScript
 
             // Build file content
             $jsContent = '';
-            foreach ($this->_cache as $js) {
+            foreach ($fileProcessor->getCache() as $js) {
                 $jsContent .= (is_array($js) ? file_get_contents($js['filepath']) : $js) . "\n\n";
             }
 
@@ -260,46 +182,7 @@ class Dm_View_Helper_CompressScript
             file_put_contents($path, $jsContent);
         }
         
-        return $this->createData('text/javascript', array('src' => $this->_getWebPath($path)));
-    }
-
-    /**
-     * Build full filename by ending it with JS extension and IS_COMPRESSED suffix
-     *
-     * @param  string $filename
-     * @return string
-     */
-    protected function _fullFilename($filename)
-    {
-        return $filename . ($this->getOption('compress') ? self::COMPRESSED_FILE_SUFFIX : '') . '.js';
-    }
-
-    /**
-     * Build web path from server variant
-     *
-     * @todo: Allow overwrite this function but setting to cache getWebPath handler
-     *
-     * @param  string $path
-     * @return string
-     */
-    protected function _getWebPath($path)
-    {
-        return '/' . ltrim(str_replace($this->_getServerPath(''), '', $path), '/');
-    }
-
-    /**
-     * Build server path from relative one
-     *
-     * @todo: Allow overwrite this function but setting to cache getServerPath handler
-     *
-     * @param  string $path
-     * @return string
-     */
-    protected function _getServerPath($path)
-    {
-        $baseDir = empty($_SERVER['DOCUMENT_ROOT'])
-                    ? APPLICATION_PATH . '/../public' : rtrim($_SERVER['DOCUMENT_ROOT'], '/');
-        return $baseDir . '/' . ltrim($path, '/');
+        return $this->createData('text/javascript', array('src' => $fileProcessor->getWebPath($path)));
     }
 
     /**
@@ -308,13 +191,9 @@ class Dm_View_Helper_CompressScript
      * @param  array|Zend_Config $config
      * @return null
      */
-    public function setConfig($config)
+    public function setConfig($config=null)
     {
-        if ($config instanceof Zend_Config) {
-            $config = $config->toArray();
-        }
-
-        $this->_config = array_merge($this->_config, $config);
+        return $this->getProcessor()->setConfig($config);
     }
 
     /**
@@ -326,6 +205,31 @@ class Dm_View_Helper_CompressScript
      */
     public function getOption($name, $defaultValue=null)
     {
-        return array_key_exists($name, $this->_config) ? $this->_config[$name] : $defaultValue;
+        return $this->getProcessor()->getOption($name, $defaultValue);
+    }
+
+    /**
+     * Create file processing object or return existen
+     *
+     * @return Dm_View_Helper_Head_File
+     */
+    public function getProcessor() {
+        if(null === $this->_process) {
+            $this->_processor = $this->setProcessor(new Dm_View_Helper_Head_File());
+        }
+
+        return $this->_processor;
+    }
+
+    /**
+     * Set file processor object using FileAbstract for dependency keeping
+     *
+     * @param  Dm_View_Helper_Head_FileAbstract $processor
+     * @return self
+     */
+    public function setProcessor(Dm_View_Helper_Head_FileAbstract $processor)
+    {
+        $this->_processor = $processor;
+        return $this;
     }
 }

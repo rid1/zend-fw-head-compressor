@@ -86,4 +86,9 @@ class Dm_View_Helper_CompressScriptTest
     {
         $this->assertTrue(is_string($this->_helper->compressScript()));
     }
+
+    public function testGetProcessorShouldReturnObjectOfDefaultClass()
+    {
+        $this->assertType('Dm_View_Helper_Head_File', $this->_helper->getProcessor());
+    }
 }
