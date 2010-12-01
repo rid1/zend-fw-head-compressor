@@ -162,7 +162,7 @@ class Dm_View_Helper_CompressScript
     {
         $fileProcessor = $this->getProcessor();
         $path = $fileProcessor->getServerPath(
-            $this->getOption('dir') . $fileProcessor->fullFilename(md5(serialize($fileProcessor->getCache())))
+            $this->getOption('dir') . '/' . $fileProcessor->fullFilename(md5(serialize($fileProcessor->getCache())))
         );
         
         if (!file_exists($path)) {
@@ -187,6 +187,7 @@ class Dm_View_Helper_CompressScript
 
             // Write js content to file
             file_put_contents($path, $jsContent);
+            $fileProcessor->gzip($path, $jsContent);
         }
         
         return $this->createData('text/javascript', array('src' => $fileProcessor->getWebPath($path)));

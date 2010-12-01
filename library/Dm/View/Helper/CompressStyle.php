@@ -191,6 +191,7 @@ class Dm_View_Helper_CompressStyle
             
             // Write css content to cache file
             file_put_contents($path, $cssContent);
+            $fileProcessor->gzip($path, $cssContent);
         }
 
         return $this->createDataStylesheet(array('href' => $this->getProcessor()->getWebPath($path)));

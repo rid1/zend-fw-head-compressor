@@ -120,6 +120,21 @@ class Dm_View_Helper_Head_File
     }
 
     /**
+     * Save gzipped content in .gz file
+     *
+     * @param  string $path
+     * @param  string $content
+     * @return null
+     */
+    public function gzip($path, $content)
+    {
+        $compress = $this->getOption('gzcompress');
+        if ($compress > 0) {
+            file_put_contents($path . '.gz', gzcompress($content, $compress));
+        }
+    }
+
+    /**
      * Build full filename by ending it with given extension and IS_COMPRESSED suffix
      *
      * @param  string $filename

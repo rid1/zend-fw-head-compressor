@@ -17,11 +17,12 @@ abstract class Dm_View_Helper_Head_FileAbstract
      * @var array
      */
     protected $_config = array(
-        'dir'      => '',
-        'extension'=> '',
-        'combine'  => true,
-        'compress' => true,
-        'symlinks' => array()
+        'dir'        => '',
+        'extension'  => '',
+        'combine'    => true,
+        'compress'   => true,
+        'symlinks'   => array(),
+        'gzcompress' => 9
     );
 
     /**
