@@ -8,8 +8,8 @@
 
         <?php echo $this->compressScript() ?>
 
-        <?php $this->headLink()->appendStylesheet($this->baseUrl('css/style.css')); ?>
-        <?php $this->headLink()->appendStylesheet($this->baseUrl('css/jquery.prettyPhoto.css')); ?>
+        <?php $this->headLink()->appendStylesheet($this->baseUrl('css/style.css'), 'screen'); ?>
+        <?php $this->headLink()->appendStylesheet($this->baseUrl('css/jquery.prettyPhoto.css'), 'print'); ?>
         <?php $this->headLink()->appendStylesheet($this->baseUrl('css/interface.css')); ?>
 
         <?php echo $this->compressStyle() ?>

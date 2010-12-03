@@ -22,7 +22,7 @@ abstract class Dm_View_Helper_Head_FileAbstract
         'combine'    => true,
         'compress'   => true,
         'symlinks'   => array(),
-        'gzcompress' => 9
+        'gzcompress' => 9,
     );
 
     /**

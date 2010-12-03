@@ -82,6 +82,7 @@ class Dm_View_Helper_CompressStyle
     public function toString($indent = null)
     {
         $headLink = $this->view->headLink();
+
         $indent   = (null !== $indent) ? $headLink->getWhitespace($indent) : $headLink->getIndent();
         $items    = array();
         
@@ -212,7 +213,10 @@ class Dm_View_Helper_CompressStyle
         }
 
         // Merge default configuration
-        $config = array_merge(array('dir'=>$this->_defaultCacheDir,'extension'=>'css'),$config);
+        $config = array_merge(array(
+            'dir'       => $this->_defaultCacheDir,
+            'extension' => 'css'
+        ),$config);
         return $this->getProcessor()->setConfig($config);
     }
 
