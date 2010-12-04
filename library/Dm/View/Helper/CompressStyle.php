@@ -239,7 +239,7 @@ class Dm_View_Helper_CompressStyle
      */
     public function getProcessor() {
         if(null === $this->_processor) {
-            $this->setProcessor(new Dm_View_Helper_Head_File());
+            $this->setProcessor(new Dm_View_Helper_Head_FileStylesheet());
         }
 
         return $this->_processor;

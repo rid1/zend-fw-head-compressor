@@ -87,7 +87,8 @@ class Dm_View_Helper_Head_File
     public function isCachable($item)
     {
         // Don't cache items with conditional attributes
-        if (!empty($item->attributes['conditional']) && is_string($item->attributes['conditional'])) {
+        $conditional = $this->_getItemConditional($item);
+        if (!empty($conditional) && is_string($conditional)) {
             return false;
         }
 
@@ -96,8 +97,13 @@ class Dm_View_Helper_Head_File
             return true;
         }
 
+        if (!empty ($item->media) && 'screen' !== $item->media) {
+            return false;
+        }
+
         // Cache file by file, found by SRC attribute
-        return (isset($item->attributes['src']) && $this->searchFile($item->attributes['src']));
+        $path = $this->_getItemPath($item);
+        return (isset($path) && $this->searchFile($path));
     }
 
     /**
@@ -111,7 +117,7 @@ class Dm_View_Helper_Head_File
         if (!empty($item->source)) {
             $this->_cache[] = $item->source;
         } else {
-            $path = $this->searchFile($item->attributes['src']);
+            $path = $this->searchFile($this->_getItemPath($item));
             $this->_cache[] = array(
                 'filepath' => $path,
                 'mtime'    => filemtime($path)
@@ -173,5 +179,27 @@ class Dm_View_Helper_Head_File
         $baseDir = empty($_SERVER['DOCUMENT_ROOT'])
                     ? APPLICATION_PATH . '/../public' : rtrim($_SERVER['DOCUMENT_ROOT'], '/');
         return $baseDir . '/' . ltrim($path, '/');
+    }
+
+    /**
+     * Return path to file described in item
+     *
+     * @param  stdClass $item
+     * @return string|null
+     */
+    protected function _getItemPath($item)
+    {
+        return empty($item->attributes['src']) ? null : $item->attributes['src'];
+    }
+
+    /**
+     * Return conditional attributes for item
+     *
+     * @param  stdClass $item
+     * @return string|null
+     */
+    protected function _getItemConditional($item)
+    {
+        return empty($item->attributes['conditional']) ? null : $item->attributes['conditional'];
     }
 }
