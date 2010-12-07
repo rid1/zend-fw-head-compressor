@@ -97,7 +97,8 @@ class Dm_View_Helper_Head_File
             return true;
         }
 
-        if (!empty ($item->media) && 'screen' !== $item->media) {
+        if (!empty ($item->media) && 'screen' !== $item->media
+                || (!empty($item->rel) && 'stylesheet' !== $item->rel)) {
             return false;
         }
 
