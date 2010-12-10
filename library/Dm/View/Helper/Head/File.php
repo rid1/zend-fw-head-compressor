@@ -13,6 +13,14 @@ class Dm_View_Helper_Head_File
     extends Dm_View_Helper_Head_FileAbstract
 {
     /**
+     * RFC 1950, http://www.faqs.org/rfcs/rfc1950.html
+     * See more http://ua2.php.net/gzcompress
+     * 
+     * @const string
+     */
+    const GZIP_COMPRESS_HEADER = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
+
+    /**
      * Used as suffix for compessed files
      *
      * @const string
@@ -137,7 +145,7 @@ class Dm_View_Helper_Head_File
     {
         $compress = $this->getOption('gzcompress');
         if ($compress > 0) {
-            file_put_contents($path . '.gz', gzcompress($content, $compress));
+            file_put_contents($path . '.gz', self::GZIP_COMPRESS_HEADER . gzcompress($content, $compress));
         }
     }
 
