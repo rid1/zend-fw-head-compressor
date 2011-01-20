@@ -31,6 +31,6 @@ class Dm_View_Helper_Head_FileStylesheet
      */
     protected function _getItemConditional($item)
     {
-        return $item->conditionalStylesheet;
+        return isset($item->conditionalStylesheet) ? $item->conditionalStylesheet : false;
     }
 }
