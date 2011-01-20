@@ -42,10 +42,13 @@ class Dm_View_Helper_Head_File
     protected $_cache = array();
 
     /**
+     * Set object configuration if given
+     *
      * @param  array|Zend_Config|null $config
      * @return null
      */
-    public function  __construct($config=null) {
+    public function  __construct($config=null)
+    {
         $this->setConfig($config);
     }
 
