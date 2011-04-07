@@ -13,11 +13,12 @@ Prototype for this helper comes from here
 http://habrahabr.ru/blogs/zend_framework/85324/
 
 But there were some great problems with given code:
+
 * no testing facilities cause of using $_SERVER array
 * hard to change rules for folders mapping when additional domains/CDN are used
 * several bags with static variables using
 * many code repeats
-*etc...
+* etc...
 
 So, I rewrite full code of this helper to make it more flexible and stable,
 but great thanks previous author for idea and first steps!
@@ -38,8 +39,10 @@ For reusing this library in your application do next:
     ;; Add new path for finding view helpers
     resources.view.helperPath.Dm_View_Helper = APPLICATION_PATH "/../library/Dm/View/Helper"
 
+
 3. Create folder for handling cached JS and CSS files. This folder should be available for webserver,
 follow directories will be used as default: 
+
 * public/cache/js for scripts
 * public/cache/css for styles
 
@@ -53,6 +56,7 @@ In other case, start to do this. Any way you have to get something like this:
 
     <?php $this->headScript()->appendFile($this->baseUrl('js/jquery.js')); ?>
     <?php $this->headScript()->appendFile($this->baseUrl('js/jquery.prettyPhoto.js')); ?>
+
 
 No matter where you have done this: in controller, view script or in layout.
 You can find more information on headScript() helper here:
@@ -68,8 +72,10 @@ CSS STYLES PROCESSING
 
 6. The same with css files appending:
 
+
     <?php $this->headLink()->appendStylesheet($this->baseUrl('styles/style.css')); ?>
     <?php $this->headLink()->appendStylesheet($this->baseUrl('styles/jquery.prettyPhoto.css')); ?>
+
 
 And than
 
@@ -120,6 +126,7 @@ For Apache, you can use this configuration:
     </FilesMatch>
 
 For using gzcompressed files with browser, which supported gzipping, you can add following lines in .htaccess files:
+
 _(example given by Andrei Fedarenchyk)_
 
     <files *.js.gz>
