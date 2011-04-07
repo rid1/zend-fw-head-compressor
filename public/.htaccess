@@ -1,5 +1,28 @@
-
 RewriteEngine On
+
+### JS and CSS compressed files ###
+<files *.js.gz>
+    AddType "text/javascript" .gz
+    AddEncoding gzip .gz
+</files>
+<files *.css.gz>
+    AddType "text/css" .gz
+    AddEncoding gzip .gz
+</files>
+# Check to see if browser can accept gzip files.
+RewriteCond %{HTTP:accept-encoding} gzip
+RewriteCond %{HTTP_USER_AGENT} !Safari
+
+# Make sure there's no trailing .gz on the url
+RewriteCond %{REQUEST_FILENAME} !^.+\.gz$
+
+# Check to see if a .gz version of the file exists.
+RewriteCond %{REQUEST_FILENAME}.gz -f
+
+# All conditions met so add .gz to URL filename (invisibly)
+RewriteRule ^(.+) $1.gz [QSA,L]
+
+### Main block for rewrite rules ###
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
