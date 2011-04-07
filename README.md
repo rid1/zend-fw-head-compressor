@@ -25,9 +25,9 @@ but great thanks previous author for idea and first steps!
 
 For reusing this library in your application do next:
 
-Copy directories library/Dm/*, library/Tools/* to you libraries directory
+Copy directories `library/Dm/*`, `library/Tools/*` to you libraries directory
 
-Add following lines to application.ini file (or do the same configuration via Bootstrap):
+Add following lines to `application.ini` file (or do the same configuration via Bootstrap):
 
     ;; Set autoloading for DM library
     autoloaderNamespaces[] = "Dm"
@@ -41,11 +41,11 @@ follow directories will be used as default:
 * public/cache/js for scripts
 * public/cache/css for styles
 
-Give this directories 0777 permissions.
+Give this directories `0777` permissions.
 
 ### Javascript processing
 
-If you already use headScript() view helper for adding JS files on HTML page, pass this step. 
+If you already use `headScript()` view helper for adding JS files on HTML page, pass this step. 
 In other case, start to do this. Any way you have to get something like this:
 
     <?php $this->headScript()->appendFile($this->baseUrl('js/jquery.js')); ?>
@@ -53,7 +53,7 @@ In other case, start to do this. Any way you have to get something like this:
 
 
 No matter where you have done this: in controller, view script or in layout.
-You can find more information on headScript() helper [here](http://framework.zend.com/manual/en/zend.view.helpers.html#zend.view.helpers.initial.headscript)
+You can find more information on `headScript()` helper [here](http://framework.zend.com/manual/en/zend.view.helpers.html#zend.view.helpers.initial.headscript)
 
 To append link to compressed JS files to head section, add follow line between `<head></head>` tags:
 
