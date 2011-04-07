@@ -1,13 +1,11 @@
-README
-======
+### Overview
 
 Dm library contains View Helpers: compressScript and compressStyle, which provide you possibility
 to pack all head files to minifyed one for reducing number of HTTP requests. For using it you don't have
 to change your application code, just change lines with adding head scripts and styles in
 main layout, so it's rather easy to use this not only for new, but even for already worked projects.
 
-INTRODUCTION
-=====================
+### Introduction
 
 Prototype for this helper comes from here
 http://habrahabr.ru/blogs/zend_framework/85324/
@@ -24,8 +22,7 @@ So, I rewrite full code of this helper to make it more flexible and stable,
 but great thanks previous author for idea and first steps!
 
 
-USING HELPERS
-=====================
+### Using helpers in you application
 
 For reusing this library in your application do next:
 
@@ -39,7 +36,6 @@ For reusing this library in your application do next:
     ;; Add new path for finding view helpers
     resources.view.helperPath.Dm_View_Helper = APPLICATION_PATH "/../library/Dm/View/Helper"
 
-
 3. Create folder for handling cached JS and CSS files. This folder should be available for webserver,
 follow directories will be used as default: 
 
@@ -48,10 +44,9 @@ follow directories will be used as default:
 
 Give this directories 0777 permissions.
 
-JAVASCRIPT PROCESSING
-=====================
+### Javascript processing
 
-4. If you already use headScript() view helper for adding JS files on HTML page, pass this step.
+4. If you already use headScript() view helper for adding JS files on HTML page, pass this step. 
 In other case, start to do this. Any way you have to get something like this:
 
     <?php $this->headScript()->appendFile($this->baseUrl('js/jquery.js')); ?>
@@ -67,8 +62,7 @@ http://framework.zend.com/manual/en/zend.view.helpers.html#zend.view.helpers.ini
     <?php echo $this->compressScript() ?>
 
 
-CSS STYLES PROCESSING
-=====================
+### CSS styles processing
 
 6. The same with css files appending:
 
@@ -82,8 +76,7 @@ And than
     <?php echo $this->compressStyle() ?>
 
 
-TESTING
-=====================
+### Testing
 
 In package you can find test classes for helper's unit testing. You can add new test cases if necessary.
 Also, if you will launch full copy of this repository as web project, you have to see on web page test string:
@@ -92,8 +85,7 @@ Also, if you will launch full copy of this repository as web project, you have t
 
 If it's true - everything is alright =) (helpers merge 3 js- and 3 css- files).
 
-ADDITIONAL NOTES
-=====================
+### Additional notes
 
 For making your site faster, you can compress this files using gzip and set server headers for client caching.
 This helpers don't gzip content of cache files cause of several problems with this in some browsers.
