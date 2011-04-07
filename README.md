@@ -66,7 +66,6 @@ http://framework.zend.com/manual/en/zend.view.helpers.html#zend.view.helpers.ini
 
 6. The same with css files appending:
 
-
     <?php $this->headLink()->appendStylesheet($this->baseUrl('styles/style.css')); ?>
     <?php $this->headLink()->appendStylesheet($this->baseUrl('styles/jquery.prettyPhoto.css')); ?>
 
