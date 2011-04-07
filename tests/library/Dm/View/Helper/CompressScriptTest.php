@@ -39,7 +39,7 @@ class Dm_View_Helper_CompressScriptTest
         $this->assertTrue($this->_helper->getOption('combine'), 'Set by default');
         $this->assertEquals('js', $this->_helper->getOption('extension'), 'Set extension to default by merging');
     }
-    
+
     public function testGetOptionWithNonExistenKeyShouldReturnDefaultValue()
     {
         $this->assertEquals(50, $this->_helper->getOption('key-which_don`t-exists', 50));
@@ -50,7 +50,7 @@ class Dm_View_Helper_CompressScriptTest
         $this->_helper->setConfig(array('compress'=>false));
         $this->_assertOverwritedCompressOption();
     }
-    
+
     public function testSetConfigShouldUnderstandConfigObject()
     {
         $this->_helper->setConfig(new Zend_Config(array('compress'=>false)));
@@ -60,7 +60,7 @@ class Dm_View_Helper_CompressScriptTest
     protected function _assertOverwritedCompressOption()
     {
         $this->assertFalse($this->_helper->getOption('compress'), 'Overwrited value');
-        $this->assertTrue($this->_helper->getOption('combine'), 'Default value'); 
+        $this->assertTrue($this->_helper->getOption('combine'), 'Default value');
     }
 
     public function testCompressScriptWithConfigParamShouldOverwriteConfig()
@@ -77,7 +77,7 @@ class Dm_View_Helper_CompressScriptTest
         $this->assertTrue($result instanceof Zend_View_Helper_HeadScript, 'Is head script object');
         $this->assertFalse($result instanceof Dm_View_Helper_CompressScript, 'Non self');
     }
-    
+
     public function testCompressScriptWithCombineShouldReturnString()
     {
         $this->assertTrue(is_string($this->_helper->compressScript()));

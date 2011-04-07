@@ -1,5 +1,11 @@
-# Compressed JS files #
-#######################
+# Compressed JS and CSS files #
+###############################
 
 public/cache/js/*.js
 public/cache/css/*.css
+public/cache/js/*.js.gz
+public/cache/css/*.css.gz
+
+# Zend library directory #
+##########################
+library/Zend

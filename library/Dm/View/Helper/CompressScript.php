@@ -40,7 +40,7 @@ class Dm_View_Helper_CompressScript
     /**
      * Constructor
      *
-     * Set separator to PHP_EOL.
+     * Set separator to PHP_EOL
      *
      * @return void
      */
