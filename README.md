@@ -53,10 +53,9 @@ In other case, start to do this. Any way you have to get something like this:
 
 
 No matter where you have done this: in controller, view script or in layout.
-You can find more information on headScript() helper here:
-http://framework.zend.com/manual/en/zend.view.helpers.html#zend.view.helpers.initial.headscript
+You can find more information on headScript() helper [here](http://framework.zend.com/manual/en/zend.view.helpers.html#zend.view.helpers.initial.headscript)
 
-To append link to compressed JS files to head section, add follow line between <head></head> tags:
+To append link to compressed JS files to head section, add follow line between `<head></head>` tags:
 
     <?php echo $this->compressScript() ?>
 
