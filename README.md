@@ -26,9 +26,9 @@ but great thanks previous author for idea and first steps!
 
 For reusing this library in your application do next:
 
-1. Copy directories library/Dm/*, library/Tools/* to you libraries directory
+Copy directories library/Dm/*, library/Tools/* to you libraries directory
 
-2. Add following lines to application.ini file (or do the same configuration via Bootstrap):
+Add following lines to application.ini file (or do the same configuration via Bootstrap):
 
     ;; Set autoloading for DM library
     autoloaderNamespaces[] = "Dm"
@@ -36,7 +36,7 @@ For reusing this library in your application do next:
     ;; Add new path for finding view helpers
     resources.view.helperPath.Dm_View_Helper = APPLICATION_PATH "/../library/Dm/View/Helper"
 
-3. Create folder for handling cached JS and CSS files. This folder should be available for webserver,
+Create folder for handling cached JS and CSS files. This folder should be available for webserver,
 follow directories will be used as default: 
 
 * public/cache/js for scripts
@@ -46,7 +46,7 @@ Give this directories 0777 permissions.
 
 ### Javascript processing
 
-4. If you already use headScript() view helper for adding JS files on HTML page, pass this step. 
+If you already use headScript() view helper for adding JS files on HTML page, pass this step. 
 In other case, start to do this. Any way you have to get something like this:
 
     <?php $this->headScript()->appendFile($this->baseUrl('js/jquery.js')); ?>
@@ -57,14 +57,14 @@ No matter where you have done this: in controller, view script or in layout.
 You can find more information on headScript() helper here:
 http://framework.zend.com/manual/en/zend.view.helpers.html#zend.view.helpers.initial.headscript
 
-5. To append link to compressed JS files to head section, add follow line between <head></head> tags:
+To append link to compressed JS files to head section, add follow line between <head></head> tags:
 
     <?php echo $this->compressScript() ?>
 
 
 ### CSS styles processing
 
-6. The same with css files appending:
+The same with css files appending:
 
     <?php $this->headLink()->appendStylesheet($this->baseUrl('styles/style.css')); ?>
     <?php $this->headLink()->appendStylesheet($this->baseUrl('styles/jquery.prettyPhoto.css')); ?>
