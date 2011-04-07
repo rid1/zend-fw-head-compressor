@@ -176,7 +176,7 @@ class Dm_View_Helper_CompressScript
             // Build file content
             $jsContent = '';
             foreach ($fileProcessor->getCache() as $js) {
-                $jsContent .= (is_array($js) ? file_get_contents($js['filepath']) : $js) . "\n\n";
+                $jsContent .= (is_array($js) ? file_get_contents($js['filepath']) : $js) . ";\n\n";
             }
 
             // Minify by using 3rd-party library
