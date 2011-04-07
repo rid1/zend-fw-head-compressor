@@ -7,8 +7,7 @@ main layout, so it's rather easy to use this not only for new, but even for alre
 
 ### Introduction
 
-Prototype for this helper comes from here
-http://habrahabr.ru/blogs/zend_framework/85324/
+Prototype for this helper comes from [here](http://habrahabr.ru/blogs/zend_framework/85324/)
 
 But there were some great problems with given code:
 
