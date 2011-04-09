@@ -5,6 +5,8 @@ to pack all head files to minifyed one for reducing number of HTTP requests. For
 to change your application code, just change lines with adding head scripts and styles in
 main layout, so it's rather easy to use this not only for new, but even for already worked projects.
 
+License: MIT, see MIT-LICENSE.txt file for more information.
+
 ### Introduction
 
 Prototype for this helper comes from [here](http://habrahabr.ru/blogs/zend_framework/85324/)
