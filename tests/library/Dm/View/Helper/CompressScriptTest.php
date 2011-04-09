@@ -33,7 +33,7 @@ class Dm_View_Helper_CompressScriptTest
         $this->_helper = new Dm_View_Helper_CompressScript();
         $this->_helper->setView($this->_view);
     }
-
+    
     public function testGetOptionShouldReturnActualValue()
     {
         $this->assertTrue($this->_helper->getOption('combine'), 'Set by default');
